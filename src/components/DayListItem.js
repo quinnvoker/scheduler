@@ -9,7 +9,7 @@ export default function DayListItem(props) {
   });
 
   const formatSpots = (spots) => {
-    return `${spots ? spots : 'no'} ${spots > 1 || !spots ? 'spots' : 'spot'} remaining`;
+    return `${spots ? spots : 'no'} ${spots === 1 ? 'spot' : 'spots'} remaining`;
   };
 
   return (
