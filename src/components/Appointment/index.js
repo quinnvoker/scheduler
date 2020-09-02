@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './Header';
 import Show from './Show';
 import Empty from './Empty';
+import Form from './Form';
 import useVisualMode from 'hooks/useVisualMode'
 import './styles.scss'
 
@@ -25,6 +26,9 @@ export default function Appointment(props) {
           student={props.interview.student}
           interviewer={props.interview.interviewer}
         />
+      )}
+      {mode === CREATE && (
+        <Form interviewers={[]} onSave={() => console.log('save')} onCancel={back} />
       )}
     </article>
   );
