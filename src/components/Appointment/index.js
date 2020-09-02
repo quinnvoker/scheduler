@@ -25,6 +25,10 @@ export default function Appointment(props) {
       .then(response => transition(SHOW, true));
   }
 
+  const removeInterview = () => {
+    props.cancelInterview(props.id)
+  }
+
   return (
     <article className="appointment">
       <Header time={props.time} />
@@ -33,6 +37,7 @@ export default function Appointment(props) {
         <Show 
           student={props.interview.student}
           interviewer={props.interview.interviewer}
+          onDelete={removeInterview}
         />
       )}
       {mode === CREATE && (
