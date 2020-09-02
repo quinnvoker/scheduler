@@ -10,3 +10,9 @@ export function getAppointmentsForDay(state, day) {
   return checkedDay.appointments
     .map(appointment => appointments[appointment]);
 };
+
+export function getInterview(state, interview) {
+  const {interviewers} = state;
+  
+  return interview ? {...interview, interviewer:interviewers[interview.interviewer] } : null;
+};
