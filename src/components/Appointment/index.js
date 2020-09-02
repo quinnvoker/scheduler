@@ -23,6 +23,12 @@ export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY)
 
   const save = (name, interviewer) => {
+    // show error view if user has not included a name or interviewer
+    if (!name || !interviewer) {
+      transition(ERROR_SAVE)
+      return;
+    }
+
     const interview = {
       student: name,
       interviewer
