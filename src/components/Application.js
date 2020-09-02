@@ -4,6 +4,7 @@ import Appointment from 'components/Appointment';
 import axios from 'axios';
 
 import "components/Application.scss";
+import { getAppointmentsForDay } from "helpers/selectors";
 
 export default function Application(props) {
   const [state, setState] = useState({
@@ -46,7 +47,7 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        {appointments.map(appointment => <Appointment key={appointment.id} {...appointment} />)}
+        {getAppointmentsForDay(state, state.day).map(appointment => <Appointment key={appointment.id} {...appointment} />)}
         <Appointment key="last" time="5pm" />
       </section>
     </main>
