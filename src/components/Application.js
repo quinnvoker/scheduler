@@ -17,7 +17,17 @@ export default function Application(props) {
   const setDay = day => setState({...state, day});
 
   const bookInterview = (id, interview) => {
-    console.log(id, interview);
+    // set up appointment with interview data
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    }
+    // set up appointments object, updating the one at given id with newly created appointment
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    }
+    setState({...state, appointments})
   }
 
   useEffect(() => {
