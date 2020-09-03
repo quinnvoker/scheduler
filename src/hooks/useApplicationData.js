@@ -9,6 +9,24 @@ export default function useApplicationData() {
     interviewers: []
   });
 
+  // get days with updated spots remaining counts from given (new) appointments
+  const getUpdatedDays = (newAppointments) => {
+    return state.days
+      .map((day) => {
+        if (day.name === state.day) {
+          const openSpots = day.appointments
+            .filter(appointmentId => !newAppointments[appointmentId].interview);
+
+          return {
+            ...day,
+            spots: openSpots.length
+          };
+        } else {
+          return day;
+        }
+      });
+  }
+
   const setDay = day => setState({...state, day});
 
   const bookInterview = (id, interview) => {
@@ -24,7 +42,7 @@ export default function useApplicationData() {
     }
 
     return axios.put(`/api/appointments/${id}`, appointment)
-      .then(response => setState({ ...state, appointments }));
+      .then(response => setState({ ...state, appointments, days: getUpdatedDays(appointments) }));
   }
 
   const cancelInterview = (id) => {
@@ -38,7 +56,7 @@ export default function useApplicationData() {
     }
 
     return axios.delete(`/api/appointments/${id}`)
-      .then(response => setState({ ...state, appointments }))
+      .then(response => setState({ ...state, appointments, days: getUpdatedDays(appointments) }))
   }
 
   useEffect(() => {
