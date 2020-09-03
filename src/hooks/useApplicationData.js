@@ -80,10 +80,9 @@ export default function useApplicationData() {
   useEffect(() => {
     let ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL)
 
-    ws.onopen = (event) => {
-      console.log('sending ping...')
-      ws.send('ping');
-    }
+    ws.onopen = (event) => ws.send('ping')
+    
+    ws.onclose = (event) => console.log('websocket connection closed');
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data)
@@ -92,10 +91,6 @@ export default function useApplicationData() {
       }
     }
 
-    ws.onclose = (event) => {
-      console.log('websocket connection closed');
-    }
-    
     return () => ws.close();
   }, [])
 
