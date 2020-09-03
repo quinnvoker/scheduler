@@ -82,6 +82,7 @@ export default function useApplicationData() {
     ws.onopen = (event) => {
       console.log("connected to server websocket!")
     }
+    return () => ws.close();
   }, [])
 
   useEffect(() => {
