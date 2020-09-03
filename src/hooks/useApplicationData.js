@@ -6,6 +6,24 @@ const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW"
 
+// get days with updated spots remaining counts from given (new) appointments
+const getUpdatedDays = (state, newAppointments) => {
+  return state.days
+    .map((day) => {
+      if (day.name === state.day) {
+        const openSpots = day.appointments
+          .filter(appointmentId => !newAppointments[appointmentId].interview);
+
+        return {
+          ...day,
+          spots: openSpots.length
+        };
+      } else {
+        return day;
+      }
+    });
+}
+
 function reducer(state, action) {
   switch (action.type) {
     case SET_DAY:
@@ -28,7 +46,9 @@ function reducer(state, action) {
         }
       }
 
-      return { ...state, appointments }
+      const days = getUpdatedDays(state, appointments);
+
+      return { ...state, appointments, days }
     }
     default:
       throw new Error(
@@ -44,24 +64,6 @@ export default function useApplicationData() {
     appointments: {},
     interviewers: []
   });
-
-  // get days with updated spots remaining counts from given (new) appointments
-  const getUpdatedDays = (newAppointments) => {
-    return state.days
-      .map((day) => {
-        if (day.name === state.day) {
-          const openSpots = day.appointments
-            .filter(appointmentId => !newAppointments[appointmentId].interview);
-
-          return {
-            ...day,
-            spots: openSpots.length
-          };
-        } else {
-          return day;
-        }
-      });
-  }
 
   const setDay = day => dispatch({ type: SET_DAY, day }) // setState({...state, day});
 
