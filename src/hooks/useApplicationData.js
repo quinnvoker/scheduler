@@ -78,6 +78,13 @@ export default function useApplicationData() {
   }
 
   useEffect(() => {
+    const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL)
+    ws.onopen = (event) => {
+      console.log("connected to server websocket!")
+    }
+  }, [])
+
+  useEffect(() => {
     Promise.all([
       axios.get('/api/days'),
       axios.get('/api/appointments'),
