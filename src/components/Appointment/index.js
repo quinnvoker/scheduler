@@ -24,10 +24,10 @@ export default function Appointment(props) {
 
   const save = (name, interviewer) => {
     // show error view if user has not included a name or interviewer
-    if (!name || !interviewer) {
-      transition(ERROR_SAVE)
-      return;
-    }
+    // if (!name || !interviewer) {
+    //   transition(ERROR_SAVE)
+    //   return;
+    // }
 
     const interview = {
       student: name,
