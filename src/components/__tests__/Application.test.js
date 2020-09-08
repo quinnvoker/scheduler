@@ -4,6 +4,8 @@ import { render, cleanup, waitForElement, fireEvent, getByText, prettyDOM, getAl
 
 import Application from "components/Application";
 
+import axios from "axios";
+
 afterEach(cleanup);
 
 describe('Application', () => {
@@ -112,5 +114,33 @@ describe('Application', () => {
     
     expect(getByText(day, '1 spot remaining')).toBeInTheDocument();
   })
+
+  it("shows the save error when failing to save an appointment", async () => {
+    // 1. prepare mock to provide failed request
+    axios.put.mockRejectedValueOnce();
+
+    const { container } = render(<Application />);
+
+    await waitForElement(() => getByText(container, 'Archie Cohen'));
+
+    const appointments = getAllByTestId(container, 'appointment');
+    const appointment = appointments[0];
+
+    fireEvent.click(getByAltText(appointment, 'Add'));
+
+    fireEvent.change(getByTestId(appointment, 'student-name-input'), {
+      target: {value: 'Saitama'}
+    });
+
+    fireEvent.click(getByAltText(appointment, 'Tori Malcolm'));
+
+    fireEvent.click(getByText(appointment, 'Save'));
+
+    await waitForElement(() => getByText(appointment, 'Error'));
+
+    fireEvent.click(getByAltText(appointment, 'Close'));
+
+    expect(getByText(appointment, 'Interviewer')).toBeInTheDocument();
+  });
 })
 
