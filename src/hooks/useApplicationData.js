@@ -64,10 +64,12 @@ export default function useApplicationData() {
 
   const bookInterview = (id, interview) => {
     return axios.put(`/api/appointments/${id}`, { interview })
+      .then(dispatch({id, interview, type: SET_INTERVIEW}))
   }
 
   const cancelInterview = (id) => {
     return axios.delete(`/api/appointments/${id}`)
+      .then(dispatch({id, interview: null, type: SET_INTERVIEW}))
   }
 
   useEffect(() => {
